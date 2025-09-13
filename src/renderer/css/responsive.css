@@ -1,0 +1,309 @@
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 220px;
+    }
+    
+    .main-content {
+        margin-left: 220px;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+    
+    .summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .chart-container {
+        height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 0;
+        height: 100vh;
+        z-index: 1000;
+        width: 250px;
+        transform: translateX(-100%);
+        transition: transform var(--transition);
+        box-shadow: var(--shadow-xl);
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.95);
+    }
+    
+    [data-theme="dark"] .sidebar {
+        background: rgba(30, 41, 59, 0.95);
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition);
+    }
+    
+    .sidebar-overlay.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding-top: 60px;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, minmax(200px, auto));
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm);
+    }
+    
+    .dashboard-card {
+        min-height: 200px;
+        padding: var(--spacing-md);
+    }
+    
+    .chart-container {
+        height: 220px;
+    }
+    
+    .summary-cards {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+    
+    .summary-card {
+        padding: var(--spacing-md);
+    }
+    
+    .chat-container {
+        height: calc(100vh - 60px);
+        padding: 0;
+    }
+    
+    .chat-header {
+        padding: var(--spacing-md) var(--spacing-sm);
+        border-bottom: 1px solid var(--border-light);
+    }
+    
+    .chat-messages {
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+    
+    .message {
+        padding: var(--spacing-sm);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .chat-input-container {
+        padding: var(--spacing-sm);
+        gap: var(--spacing-xs);
+    }
+    
+    .chat-input {
+        font-size: 16px; /* Prevent zoom on iOS */
+        min-height: 44px;
+    }
+    
+    .settings-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm);
+    }
+    
+    .settings-card {
+        padding: var(--spacing-md);
+    }
+    
+    .mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-md);
+        background: var(--bg-primary);
+        border-bottom: 1px solid var(--border-light);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.95);
+        height: 60px;
+    }
+    
+    [data-theme="dark"] .mobile-header {
+        background: rgba(30, 41, 59, 0.95);
+    }
+    
+    .mobile-menu-btn {
+        background: none;
+        border: none;
+        color: var(--text-primary);
+        font-size: 1.25rem;
+        cursor: pointer;
+        padding: var(--spacing-sm);
+        border-radius: var(--radius-md);
+        transition: all var(--transition-fast);
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .mobile-menu-btn:hover {
+        background: var(--bg-secondary);
+        color: var(--primary-color);
+        transform: scale(1.05);
+    }
+    
+    .mobile-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+    
+    .btn-primary, .btn-secondary {
+        min-height: 44px;
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-grid {
+        padding: var(--spacing-xs);
+        gap: var(--spacing-xs);
+    }
+    
+    .dashboard-card {
+        min-height: 180px;
+        padding: var(--spacing-sm);
+    }
+    
+    .chart-container {
+        height: 200px;
+    }
+    
+    .summary-card {
+        padding: var(--spacing-sm);
+    }
+    
+    .summary-card h3 {
+        font-size: 1.75rem;
+    }
+    
+    .summary-card .change {
+        font-size: 0.8rem;
+    }
+    
+    .chat-messages {
+        padding: var(--spacing-xs);
+    }
+    
+    .message {
+        padding: var(--spacing-xs);
+        font-size: 0.9rem;
+    }
+    
+    .chat-input-container {
+        padding: var(--spacing-xs);
+    }
+    
+    .mobile-header {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .mobile-title {
+        font-size: 1rem;
+    }
+    
+    .settings-grid {
+        padding: var(--spacing-xs);
+        gap: var(--spacing-xs);
+    }
+    
+    .settings-card {
+        padding: var(--spacing-sm);
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: var(--spacing-sm);
+        font-size: 0.9rem;
+    }
+}
+
+/* Touch-friendly enhancements */
+@media (hover: none) and (pointer: coarse) {
+    .nav-link, .btn, .message-action, .summary-card {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .nav-link {
+        padding: var(--spacing-md);
+    }
+    
+    .tooltip {
+        display: none; /* Hide tooltips on touch devices */
+    }
+    
+    .message-actions {
+        opacity: 1; /* Always show actions on touch */
+    }
+    
+    .suggestion-btn {
+        min-height: 44px;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+}
+
+/* Landscape orientation on phones */
+@media (max-width: 768px) and (orientation: landscape) {
+    .mobile-header {
+        height: 50px;
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .main-content {
+        padding-top: 50px;
+    }
+    
+    .chat-container {
+        height: calc(100vh - 50px);
+    }
+    
+    .dashboard-card {
+        min-height: 160px;
+    }
+    
+    .chart-container {
+        height: 180px;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .nav-icon, .mobile-menu-btn {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}
