@@ -22,9 +22,39 @@ class FinancialAIApp {
         this.hideLoadingScreen();
         
         // Initialize components
-        this.dashboard = new Dashboard(this);
-        this.chat = new ChatInterface(this);
-        this.privacy = new PrivacyController(this);
+        // Use enhanced dashboard if available, otherwise fallback to original
+        if (window.EnhancedDashboard) {
+            this.enhancedDashboard = new EnhancedDashboard(this);
+            // Make it globally available for onclick handlers
+            window.enhancedDashboard = this.enhancedDashboard;
+        } else {
+            this.dashboard = new Dashboard(this);
+        }
+        
+        // Initialize enhanced components if available
+        if (window.EnhancedChatInterface) {
+            this.enhancedChat = new EnhancedChatInterface(this);
+            // Make it globally available for onclick handlers
+            window.enhancedChat = this.enhancedChat;
+        } else {
+            this.chat = new ChatInterface(this);
+        }
+        
+        if (window.EnhancedPrivacyController) {
+            this.enhancedPrivacy = new EnhancedPrivacyController(this);
+        } else {
+            this.privacy = new PrivacyController(this);
+        }
+        
+        // Initialize session manager
+        if (window.SessionManager) {
+            this.sessionManager = new SessionManager(this);
+            // Make it globally available
+            window.sessionManager = this.sessionManager;
+        }
+        
+        // Initialize theme
+        this.initTheme();
     }
 
     setupEventListeners() {
@@ -61,6 +91,26 @@ class FinancialAIApp {
         if (refreshBtn) {
             refreshBtn.addEventListener('click', () => {
                 this.refreshAllData();
+            });
+        }
+
+        // Theme toggle button
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                this.toggleTheme();
+            });
+        }
+
+        // Session history button
+        const sessionHistoryBtn = document.getElementById('session-history-btn');
+        if (sessionHistoryBtn) {
+            sessionHistoryBtn.addEventListener('click', () => {
+                if (this.sessionManager) {
+                    this.sessionManager.showSessionUI();
+                } else {
+                    this.showNotification('Session management not available', 'warning');
+                }
             });
         }
 
@@ -391,7 +441,37 @@ class FinancialAIApp {
 
     setLoading(loading) {
         this.isLoading = loading;
-        // Update UI loading states as needed
+        
+        // Update UI loading states
+        const loadingIndicator = document.querySelector('.loading-indicator');
+        if (loadingIndicator) {
+            loadingIndicator.style.display = loading ? 'block' : 'none';
+        }
+        
+        // Disable/enable interactive elements during loading
+        const interactiveElements = document.querySelectorAll('button:not(.loading-disabled), input, select');
+        interactiveElements.forEach(el => {
+            if (loading) {
+                el.disabled = true;
+                el.classList.add('temp-disabled');
+            } else {
+                el.disabled = false;
+                el.classList.remove('temp-disabled');
+            }
+        });
+    }
+    
+    /**
+     * Enhanced component support methods
+     */
+    
+    // Privacy settings change handler for enhanced privacy controller
+    onPrivacySettingsChanged(settings) {
+        console.log('Privacy settings changed:', settings);
+        // Update API service or other components that need to know about privacy changes
+        if (window.apiService) {
+            window.apiService.privacySettings = settings;
+        }
     }
 
     hideLoadingScreen() {
@@ -474,6 +554,44 @@ class FinancialAIApp {
             style: 'currency',
             currency: 'INR'
         }).format(amount);
+    }
+
+    // Theme Management
+    initTheme() {
+        const savedTheme = localStorage.getItem('financial-ai-theme') || 'light';
+        this.setTheme(savedTheme);
+    }
+
+    toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        this.setTheme(newTheme);
+    }
+
+    setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('financial-ai-theme', theme);
+        
+        // Update theme toggle icon
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            const icon = themeToggle.querySelector('i');
+            if (theme === 'dark') {
+                icon.className = 'fas fa-sun';
+                themeToggle.title = 'Switch to Light Mode';
+            } else {
+                icon.className = 'fas fa-moon';
+                themeToggle.title = 'Switch to Dark Mode';
+            }
+        }
+        
+        // Add smooth transition effect
+        document.body.style.transition = 'all 0.3s ease';
+        setTimeout(() => {
+            document.body.style.transition = '';
+        }, 300);
+        
+        this.showNotification(`Switched to ${theme} mode`, 'info');
     }
 }
 

@@ -53,14 +53,35 @@ class Dashboard {
                     label: 'Spending',
                     data: [],
                     borderColor: 'rgb(79, 70, 229)',
-                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    backgroundColor: {
+                        type: 'linear',
+                        x0: 0, y0: 0, x1: 0, y1: 1,
+                        colorStops: [
+                            { offset: 0, color: 'rgba(79, 70, 229, 0.8)' },
+                            { offset: 1, color: 'rgba(79, 70, 229, 0.1)' }
+                        ]
+                    },
                     tension: 0.4,
-                    fill: true
+                    fill: true,
+                    pointBackgroundColor: 'rgb(79, 70, 229)',
+                    pointBorderColor: 'white',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    borderWidth: 3
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                },
                 plugins: {
                     legend: {
                         display: false
@@ -68,9 +89,19 @@ class Dashboard {
                     tooltip: {
                         mode: 'index',
                         intersect: false,
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: 'white',
+                        bodyColor: 'white',
+                        borderColor: 'rgb(79, 70, 229)',
+                        borderWidth: 2,
+                        cornerRadius: 8,
+                        displayColors: false,
                         callbacks: {
                             label: (context) => {
-                                return `Spending: ${this.app.formatCurrency(context.parsed.y)}`;
+                                return `💰 Spending: ${this.app.formatCurrency(context.parsed.y)}`;
+                            },
+                            title: (context) => {
+                                return `📅 ${context[0].label}`;
                             }
                         }
                     }
@@ -114,22 +145,30 @@ class Dashboard {
                 datasets: [{
                     data: [],
                     backgroundColor: [
-                        '#f59e0b', // Food
-                        '#3b82f6', // Transport
-                        '#8b5cf6', // Shopping
-                        '#ef4444', // Bills
-                        '#10b981', // Entertainment
-                        '#f97316', // Health
-                        '#6366f1'  // Others
+                        'linear-gradient(45deg, #f59e0b, #fbbf24)', // Food
+                        'linear-gradient(45deg, #3b82f6, #60a5fa)', // Transport
+                        'linear-gradient(45deg, #8b5cf6, #a78bfa)', // Shopping
+                        'linear-gradient(45deg, #ef4444, #f87171)', // Bills
+                        'linear-gradient(45deg, #10b981, #34d399)', // Entertainment
+                        'linear-gradient(45deg, #f97316, #fb923c)', // Health
+                        'linear-gradient(45deg, #6366f1, #818cf8)'  // Others
                     ],
-                    borderWidth: 0,
-                    hoverBorderWidth: 2,
-                    hoverBorderColor: '#fff'
+                    borderWidth: 3,
+                    borderColor: 'rgba(255, 255, 255, 0.8)',
+                    hoverBorderWidth: 4,
+                    hoverBorderColor: '#fff',
+                    hoverOffset: 10
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                animation: {
+                    animateRotate: true,
+                    animateScale: true,
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                },
                 plugins: {
                     legend: {
                         position: 'right',
@@ -137,22 +176,45 @@ class Dashboard {
                             usePointStyle: true,
                             padding: 15,
                             font: {
-                                size: 12
+                                size: 12,
+                                family: 'Inter'
+                            },
+                            generateLabels: (chart) => {
+                                const datasets = chart.data.datasets;
+                                return chart.data.labels.map((label, i) => ({
+                                    text: label,
+                                    fillStyle: datasets[0].backgroundColor[i],
+                                    strokeStyle: datasets[0].borderColor,
+                                    pointStyle: 'circle',
+                                    hidden: false,
+                                    index: i
+                                }));
                             }
                         }
                     },
                     tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        titleColor: 'white',
+                        bodyColor: 'white',
+                        borderColor: 'rgb(79, 70, 229)',
+                        borderWidth: 2,
+                        cornerRadius: 8,
+                        displayColors: true,
                         callbacks: {
                             label: (context) => {
                                 const label = context.label || '';
                                 const value = this.app.formatCurrency(context.parsed);
                                 const percentage = ((context.parsed / context.dataset.data.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
-                                return `${label}: ${value} (${percentage}%)`;
+                                return `💳 ${label}: ${value} (${percentage}%)`;
+                            },
+                            title: (context) => {
+                                return '📊 Spending Breakdown';
                             }
                         }
                     }
                 },
-                cutout: '60%'
+                cutout: '65%',
+                radius: '90%'
             }
         });
     }

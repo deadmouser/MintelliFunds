@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial AI Assistant</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/enhanced-components.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -26,9 +28,14 @@
                     <i class="fas fa-chart-line"></i>
                     <span>FinanceAI</span>
                 </div>
-                <button id="sidebar-toggle" class="sidebar-toggle">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <div class="header-controls">
+                    <button id="theme-toggle" class="theme-toggle" title="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="sidebar-toggle" class="sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
             </div>
             
             <ul class="nav-menu">
@@ -69,6 +76,12 @@
                     <i class="fas fa-lock"></i>
                     <span>Privacy Protected</span>
                 </div>
+                <div class="sidebar-actions">
+                    <button id="session-history-btn" class="sidebar-action-btn" title="View Session History">
+                        <i class="fas fa-history"></i>
+                        Session History
+                    </button>
+                </div>
             </div>
         </nav>
 
@@ -91,7 +104,7 @@
                     <div class="card summary-card">
                         <div class="card-header">
                             <h3>Total Balance</h3>
-                            <i class="fas fa-wallet"></i>
+                            <i class="fas fa-wallet" data-tooltip="Your total account balance across all accounts" data-tooltip-position="bottom"></i>
                         </div>
                         <div class="card-body">
                             <div class="amount" id="total-balance">₹0</div>
@@ -105,7 +118,7 @@
                     <div class="card summary-card">
                         <div class="card-header">
                             <h3>Monthly Spending</h3>
-                            <i class="fas fa-credit-card"></i>
+                            <i class="fas fa-credit-card" data-tooltip="Total expenses for the current month" data-tooltip-position="bottom"></i>
                         </div>
                         <div class="card-body">
                             <div class="amount" id="monthly-spending">₹0</div>
@@ -119,7 +132,7 @@
                     <div class="card summary-card">
                         <div class="card-header">
                             <h3>Savings Goal</h3>
-                            <i class="fas fa-piggy-bank"></i>
+                            <i class="fas fa-piggy-bank" data-tooltip="Progress toward your monthly savings target" data-tooltip-position="bottom"></i>
                         </div>
                         <div class="card-body">
                             <div class="amount" id="savings-progress">₹0</div>
@@ -133,7 +146,7 @@
                     <div class="card summary-card">
                         <div class="card-header">
                             <h3>Investment Value</h3>
-                            <i class="fas fa-chart-line"></i>
+                            <i class="fas fa-chart-line" data-tooltip="Current value of your investment portfolio" data-tooltip-position="bottom"></i>
                         </div>
                         <div class="card-body">
                             <div class="amount" id="investment-value">₹0</div>
@@ -455,9 +468,16 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/mobile-nav.js"></script>
+    <script src="js/enhanced-privacy.js"></script>
+    <script src="js/enhanced-chat.js"></script>
+    <script src="js/enhanced-dashboard.js"></script>
+    <script src="js/session-manager.js"></script>
     <script src="js/app.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/chat.js"></script>
+    <script src="js/chat-accessibility.js"></script>
     <script src="js/privacy.js"></script>
 </body>
 </html>
