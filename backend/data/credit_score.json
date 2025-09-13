@@ -1,0 +1,32 @@
+{
+  "score": 750,
+  "range": "Good",
+  "last_updated": "2024-01-15T10:30:00Z",
+  "factors": [
+    {
+      "factor": "Payment History",
+      "impact": "positive",
+      "description": "No late payments in the last 24 months"
+    },
+    {
+      "factor": "Credit Utilization",
+      "impact": "negative",
+      "description": "Credit card utilization is 35%, consider reducing to under 30%"
+    },
+    {
+      "factor": "Length of Credit History",
+      "impact": "positive",
+      "description": "Average account age is 8 years"
+    },
+    {
+      "factor": "New Credit",
+      "impact": "neutral",
+      "description": "No new credit applications in the last 6 months"
+    },
+    {
+      "factor": "Credit Mix",
+      "impact": "positive",
+      "description": "Good mix of credit types (mortgage, auto loan, credit cards)"
+    }
+  ]
+}

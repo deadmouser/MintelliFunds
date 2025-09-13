@@ -1,0 +1,9 @@
+{
+  "current_balance": 125000.00,
+  "currency": "USD",
+  "last_contribution": "2024-01-01T00:00:00Z",
+  "contribution_amount": 1500.00,
+  "employer_match": 1500.00,
+  "vesting_percentage": 100.0,
+  "last_updated": "2024-01-15T10:30:00Z"
+}

@@ -1,0 +1,137 @@
+[
+  {
+    "id": "txn_001",
+    "date": "2024-01-15T09:30:00Z",
+    "amount": -150.50,
+    "description": "Grocery shopping at SuperMart",
+    "category": "Food & Dining",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_002",
+    "date": "2024-01-15T14:20:00Z",
+    "amount": -45.00,
+    "description": "Lunch at Cafe Central",
+    "category": "Food & Dining",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_003",
+    "date": "2024-01-14T16:45:00Z",
+    "amount": -89.99,
+    "description": "Gas station fill-up",
+    "category": "Transportation",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_004",
+    "date": "2024-01-14T10:15:00Z",
+    "amount": 3500.00,
+    "description": "Salary deposit",
+    "category": "Income",
+    "account": "Primary Checking",
+    "type": "income"
+  },
+  {
+    "id": "txn_005",
+    "date": "2024-01-13T19:30:00Z",
+    "amount": -25.99,
+    "description": "Netflix subscription",
+    "category": "Entertainment",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_006",
+    "date": "2024-01-13T11:00:00Z",
+    "amount": -1200.00,
+    "description": "Rent payment",
+    "category": "Housing",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_007",
+    "date": "2024-01-12T15:30:00Z",
+    "amount": -75.00,
+    "description": "Electricity bill",
+    "category": "Utilities",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_008",
+    "date": "2024-01-12T08:45:00Z",
+    "amount": -200.00,
+    "description": "Gym membership",
+    "category": "Health & Fitness",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_009",
+    "date": "2024-01-11T20:15:00Z",
+    "amount": -15.50,
+    "description": "Coffee shop",
+    "category": "Food & Dining",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_010",
+    "date": "2024-01-11T13:20:00Z",
+    "amount": -300.00,
+    "description": "Online shopping - Amazon",
+    "category": "Shopping",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_011",
+    "date": "2024-01-10T16:00:00Z",
+    "amount": -85.00,
+    "description": "Phone bill",
+    "category": "Utilities",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_012",
+    "date": "2024-01-10T12:30:00Z",
+    "amount": -60.00,
+    "description": "Restaurant dinner",
+    "category": "Food & Dining",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_013",
+    "date": "2024-01-09T14:45:00Z",
+    "amount": -40.00,
+    "description": "Uber ride",
+    "category": "Transportation",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_014",
+    "date": "2024-01-09T09:00:00Z",
+    "amount": -150.00,
+    "description": "Grocery shopping",
+    "category": "Food & Dining",
+    "account": "Primary Checking",
+    "type": "expense"
+  },
+  {
+    "id": "txn_015",
+    "date": "2024-01-08T17:30:00Z",
+    "amount": -500.00,
+    "description": "Investment transfer to savings",
+    "category": "Savings",
+    "account": "Primary Checking",
+    "type": "expense"
+  }
+]

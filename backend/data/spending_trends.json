@@ -1,0 +1,32 @@
+[
+  {
+    "period": "2024-01",
+    "total_spending": 3200.50,
+    "average_daily": 103.24,
+    "trend_direction": "up"
+  },
+  {
+    "period": "2023-12",
+    "total_spending": 2850.75,
+    "average_daily": 91.96,
+    "trend_direction": "down"
+  },
+  {
+    "period": "2023-11",
+    "total_spending": 3100.25,
+    "average_daily": 103.34,
+    "trend_direction": "up"
+  },
+  {
+    "period": "2023-10",
+    "total_spending": 2750.00,
+    "average_daily": 88.71,
+    "trend_direction": "stable"
+  },
+  {
+    "period": "2023-09",
+    "total_spending": 2900.50,
+    "average_daily": 96.68,
+    "trend_direction": "up"
+  }
+]

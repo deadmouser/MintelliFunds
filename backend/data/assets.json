@@ -1,0 +1,66 @@
+[
+  {
+    "id": "asset_001",
+    "name": "Primary Residence",
+    "type": "real_estate",
+    "value": 450000.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "asset_002",
+    "name": "2019 Honda Civic",
+    "type": "vehicle",
+    "value": 18000.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "asset_003",
+    "name": "Emergency Fund",
+    "type": "cash",
+    "value": 15000.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "asset_004",
+    "name": "Retirement 401k",
+    "type": "retirement",
+    "value": 125000.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "asset_005",
+    "name": "Investment Portfolio",
+    "type": "investments",
+    "value": 45000.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "asset_006",
+    "name": "High-Yield Savings",
+    "type": "savings",
+    "value": 25000.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "asset_007",
+    "name": "Gold Jewelry",
+    "type": "precious_metals",
+    "value": 5000.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "asset_008",
+    "name": "Laptop & Electronics",
+    "type": "personal_property",
+    "value": 3000.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  }
+]

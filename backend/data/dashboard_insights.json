@@ -1,0 +1,50 @@
+[
+  {
+    "id": "insight_001",
+    "title": "High Dining Expenses",
+    "description": "Your dining expenses are 30% higher than last month. Consider cooking more meals at home to save money.",
+    "type": "spending_alert",
+    "priority": "medium",
+    "actionable": true
+  },
+  {
+    "id": "insight_002",
+    "title": "Excellent Savings Rate",
+    "description": "You're saving 15.6% of your income this month, which exceeds the recommended 10% target.",
+    "type": "positive_insight",
+    "priority": "low",
+    "actionable": false
+  },
+  {
+    "id": "insight_003",
+    "title": "Credit Card Balance High",
+    "description": "Your credit card balance is $2,500. Consider paying more than the minimum to reduce interest charges.",
+    "type": "debt_alert",
+    "priority": "high",
+    "actionable": true
+  },
+  {
+    "id": "insight_004",
+    "title": "Investment Performance",
+    "description": "Your investment portfolio has grown 8.5% this quarter, outperforming the market average.",
+    "type": "investment_update",
+    "priority": "low",
+    "actionable": false
+  },
+  {
+    "id": "insight_005",
+    "title": "Emergency Fund Status",
+    "description": "Your emergency fund covers 6 months of expenses, which is excellent for financial security.",
+    "type": "financial_health",
+    "priority": "low",
+    "actionable": false
+  },
+  {
+    "id": "insight_006",
+    "title": "Subscription Audit",
+    "description": "You have 3 active subscriptions totaling $45.99/month. Review if all are necessary.",
+    "type": "subscription_alert",
+    "priority": "medium",
+    "actionable": true
+  }
+]
