@@ -1,0 +1,47 @@
+[
+  {
+    "id": "liab_001",
+    "name": "Home Mortgage",
+    "type": "mortgage",
+    "balance": 320000.00,
+    "interest_rate": 3.5,
+    "monthly_payment": 1800.00,
+    "currency": "USD"
+  },
+  {
+    "id": "liab_002",
+    "name": "Car Loan",
+    "type": "auto_loan",
+    "balance": 8500.00,
+    "interest_rate": 4.2,
+    "monthly_payment": 350.00,
+    "currency": "USD"
+  },
+  {
+    "id": "liab_003",
+    "name": "Credit Card - Chase",
+    "type": "credit_card",
+    "balance": 2500.00,
+    "interest_rate": 18.9,
+    "monthly_payment": 150.00,
+    "currency": "USD"
+  },
+  {
+    "id": "liab_004",
+    "name": "Student Loan",
+    "type": "student_loan",
+    "balance": 15000.00,
+    "interest_rate": 5.8,
+    "monthly_payment": 200.00,
+    "currency": "USD"
+  },
+  {
+    "id": "liab_005",
+    "name": "Personal Loan",
+    "type": "personal_loan",
+    "balance": 5000.00,
+    "interest_rate": 7.5,
+    "monthly_payment": 250.00,
+    "currency": "USD"
+  }
+]

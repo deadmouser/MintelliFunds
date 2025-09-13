@@ -1,0 +1,50 @@
+[
+  {
+    "category": "Food & Dining",
+    "amount": 850.25,
+    "percentage": 26.5,
+    "transaction_count": 45
+  },
+  {
+    "category": "Housing",
+    "amount": 1200.00,
+    "percentage": 37.5,
+    "transaction_count": 1
+  },
+  {
+    "category": "Transportation",
+    "amount": 129.99,
+    "percentage": 4.1,
+    "transaction_count": 3
+  },
+  {
+    "category": "Utilities",
+    "amount": 160.00,
+    "percentage": 5.0,
+    "transaction_count": 2
+  },
+  {
+    "category": "Entertainment",
+    "amount": 25.99,
+    "percentage": 0.8,
+    "transaction_count": 1
+  },
+  {
+    "category": "Health & Fitness",
+    "amount": 200.00,
+    "percentage": 6.2,
+    "transaction_count": 1
+  },
+  {
+    "category": "Shopping",
+    "amount": 300.00,
+    "percentage": 9.4,
+    "transaction_count": 1
+  },
+  {
+    "category": "Savings",
+    "amount": 500.00,
+    "percentage": 15.6,
+    "transaction_count": 1
+  }
+]

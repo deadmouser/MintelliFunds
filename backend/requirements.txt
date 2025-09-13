@@ -1,0 +1,19 @@
+# FastAPI and web framework dependencies
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+
+# CORS middleware
+python-multipart==0.0.6
+
+# Additional utilities
+python-json-logger==2.0.7
+python-dateutil==2.8.2
+
+# AI/ML dependencies
+google-generativeai==0.3.2
+
+# Development dependencies (optional)
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx==0.25.2

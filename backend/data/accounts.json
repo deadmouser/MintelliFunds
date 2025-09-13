@@ -1,0 +1,50 @@
+[
+  {
+    "id": "acc_001",
+    "name": "Primary Checking",
+    "type": "checking",
+    "balance": 2500.75,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "acc_002",
+    "name": "High-Yield Savings",
+    "type": "savings",
+    "balance": 25000.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "acc_003",
+    "name": "Emergency Fund",
+    "type": "savings",
+    "balance": 15000.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "acc_004",
+    "name": "Investment Account",
+    "type": "investment",
+    "balance": 45000.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "acc_005",
+    "name": "Retirement 401k",
+    "type": "retirement",
+    "balance": 125000.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  },
+  {
+    "id": "acc_006",
+    "name": "Credit Card - Chase",
+    "type": "credit_card",
+    "balance": -2500.00,
+    "currency": "USD",
+    "last_updated": "2024-01-15T10:30:00Z"
+  }
+]

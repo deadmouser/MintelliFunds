@@ -1,0 +1,72 @@
+[
+  {
+    "id": "inv_001",
+    "symbol": "AAPL",
+    "name": "Apple Inc.",
+    "type": "stock",
+    "quantity": 100.0,
+    "current_price": 150.25,
+    "total_value": 15025.00,
+    "currency": "USD"
+  },
+  {
+    "id": "inv_002",
+    "symbol": "MSFT",
+    "name": "Microsoft Corporation",
+    "type": "stock",
+    "quantity": 50.0,
+    "current_price": 280.75,
+    "total_value": 14037.50,
+    "currency": "USD"
+  },
+  {
+    "id": "inv_003",
+    "symbol": "GOOGL",
+    "name": "Alphabet Inc.",
+    "type": "stock",
+    "quantity": 25.0,
+    "current_price": 142.50,
+    "total_value": 3562.50,
+    "currency": "USD"
+  },
+  {
+    "id": "inv_004",
+    "symbol": "SPY",
+    "name": "SPDR S&P 500 ETF",
+    "type": "etf",
+    "quantity": 75.0,
+    "current_price": 485.20,
+    "total_value": 36390.00,
+    "currency": "USD"
+  },
+  {
+    "id": "inv_005",
+    "symbol": "VTI",
+    "name": "Vanguard Total Stock Market ETF",
+    "type": "etf",
+    "quantity": 30.0,
+    "current_price": 245.80,
+    "total_value": 7374.00,
+    "currency": "USD"
+  },
+  {
+    "id": "inv_006",
+    "symbol": "BTC",
+    "name": "Bitcoin",
+    "type": "cryptocurrency",
+    "quantity": 0.5,
+    "current_price": 42000.00,
+    "total_value": 21000.00,
+    "currency": "USD"
+  },
+  {
+    "id": "inv_007",
+    "symbol": "ETH",
+    "name": "Ethereum",
+    "type": "cryptocurrency",
+    "quantity": 2.0,
+    "current_price": 2500.00,
+    "total_value": 5000.00,
+    "currency": "USD"
+  }
+]
