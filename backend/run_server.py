@@ -15,11 +15,11 @@ if __name__ == "__main__":
     # Change to the backend directory
     os.chdir(backend_dir)
     
-    print("🚀 Starting Financial AI Assistant Backend...")
-    print("📍 Backend directory:", backend_dir)
-    print("🌐 API will be available at: http://localhost:8000")
-    print("📚 API documentation: http://localhost:8000/docs")
-    print("🔍 Alternative docs: http://localhost:8000/redoc")
+    print("Starting Financial AI Assistant Backend...")
+    print("Backend directory:", backend_dir)
+    print("API will be available at: http://localhost:8000")
+    print("API documentation: http://localhost:8000/docs")
+    print("Alternative docs: http://localhost:8000/redoc")
     print("-" * 50)
     
     # Run the server

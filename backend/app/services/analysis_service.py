@@ -1,11 +1,23 @@
 """
 Financial analysis service for processing financial data
+Integrates advanced financial algorithms and basic NLP-based analysis
 """
 import logging
 from typing import Dict, List, Any, Optional
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import statistics
+
+# Import our advanced financial analysis components
+try:
+    from .financial_analyzer import FinancialAnalyzer
+    from .data_validator import DataValidator
+    from .financial_analyzer_helpers import FinancialAnalyzerHelpers
+except ImportError as e:
+    logging.warning(f"Could not import advanced financial analysis modules: {e}")
+    FinancialAnalyzer = None
+    DataValidator = None
+    FinancialAnalyzerHelpers = None
 
 logger = logging.getLogger(__name__)
 
@@ -14,8 +26,313 @@ class AnalysisService:
     """Service for performing financial analysis on filtered data"""
     
     def __init__(self):
-        """Initialize the analysis service"""
-        pass
+        """Initialize the analysis service with advanced capabilities"""
+        # Initialize advanced analysis components if available
+        if FinancialAnalyzer and DataValidator:
+            self.advanced_analyzer = FinancialAnalyzer()
+            self.data_validator = DataValidator()
+            self.has_advanced_features = True
+            logger.info("Advanced financial analysis features enabled")
+        else:
+            self.advanced_analyzer = None
+            self.data_validator = None
+            self.has_advanced_features = False
+            logger.warning("Using basic analysis features only")
+        
+        # Cache for storing recent analysis results
+        self.analysis_cache = {}
+        
+    async def get_advanced_spending_analysis(self, user_id: str, transactions: List[Dict[str, Any]], 
+                                           timeframe_days: int = 30) -> Dict[str, Any]:
+        """Get advanced spending analysis if available, otherwise fall back to basic"""
+        if not self.has_advanced_features:
+            # Fallback to basic analysis
+            return self.calculate_spending({"transactions": transactions}, {})
+        
+        try:
+            # Use advanced analyzer
+            validated_transactions = await self.data_validator.validate_transactions(transactions)
+            result = self.advanced_analyzer.analyze_spending_patterns(validated_transactions, timeframe_days)
+            
+            # Cache the result
+            cache_key = f"advanced_spending_{user_id}_{timeframe_days}"
+            self.analysis_cache[cache_key] = {
+                "timestamp": datetime.now(),
+                "data": result
+            }
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Advanced spending analysis failed: {e}")
+            # Fallback to basic analysis
+            return self.calculate_spending({"transactions": transactions}, {})
+    
+    async def get_financial_health_score(self, user_id: str, accounts: List[Dict[str, Any]], 
+                                       liabilities: List[Dict[str, Any]], 
+                                       transactions: List[Dict[str, Any]], 
+                                       investments: List[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """Get comprehensive financial health score if advanced features available"""
+        if not self.has_advanced_features:
+            return {"error": "Advanced financial health analysis not available", "score": 0}
+        
+        try:
+            validated_accounts = await self.data_validator.validate_accounts(accounts)
+            validated_liabilities = await self.data_validator.validate_liabilities(liabilities)
+            validated_transactions = await self.data_validator.validate_transactions(transactions)
+            
+            if investments:
+                validated_investments = await self.data_validator.validate_investments(investments)
+            else:
+                validated_investments = []
+            
+            result = self.advanced_analyzer.calculate_financial_health_score(
+                validated_accounts, validated_liabilities, validated_transactions, validated_investments
+            )
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Financial health calculation failed: {e}")
+            return {"error": str(e), "score": 0}
+    
+    async def get_balance_forecast(self, user_id: str, accounts: List[Dict[str, Any]], 
+                                 transactions: List[Dict[str, Any]], 
+                                 months_ahead: int = 6) -> Dict[str, Any]:
+        """Get advanced balance forecasting if available"""
+        if not self.has_advanced_features:
+            # Fallback to basic savings projection
+            return self.project_savings({"transactions": transactions, "accounts": accounts}, {})
+        
+        try:
+            validated_accounts = await self.data_validator.validate_accounts(accounts)
+            validated_transactions = await self.data_validator.validate_transactions(transactions)
+            
+            result = self.advanced_analyzer.forecast_future_balance(
+                validated_accounts, validated_transactions, months_ahead
+            )
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Balance forecast failed: {e}")
+            # Fallback to basic projection
+            return self.project_savings({"transactions": transactions, "accounts": accounts}, {})
+    
+    async def detect_anomalies(self, user_id: str, transactions: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Detect financial anomalies using advanced analysis"""
+        if not self.has_advanced_features:
+            return {"error": "Advanced anomaly detection not available", "anomalies": []}
+        
+        try:
+            validated_transactions = await self.data_validator.validate_transactions(transactions)
+            result = self.advanced_analyzer.detect_financial_anomalies(validated_transactions)
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Anomaly detection failed: {e}")
+            return {"error": str(e), "anomalies": []}
+    
+    async def analyze_purchase_affordability(self, user_id: str, accounts: List[Dict[str, Any]], 
+                                           transactions: List[Dict[str, Any]], 
+                                           liabilities: List[Dict[str, Any]],
+                                           purchase_amount: float,
+                                           target_item: str = "purchase") -> Dict[str, Any]:
+        """Analyze purchase affordability with advanced features if available"""
+        if not self.has_advanced_features:
+            # Fallback to basic affordability check
+            entities = {"amounts": [purchase_amount]}
+            return self.check_affordability(
+                {"transactions": transactions, "accounts": accounts}, entities
+            )
+        
+        try:
+            validated_accounts = await self.data_validator.validate_accounts(accounts)
+            validated_transactions = await self.data_validator.validate_transactions(transactions)
+            validated_liabilities = await self.data_validator.validate_liabilities(liabilities)
+            
+            result = self.advanced_analyzer.check_purchase_affordability(
+                validated_accounts, validated_transactions, validated_liabilities, 
+                purchase_amount, target_item
+            )
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Purchase affordability analysis failed: {e}")
+            # Fallback to basic check
+            entities = {"amounts": [purchase_amount]}
+            return self.check_affordability(
+                {"transactions": transactions, "accounts": accounts}, entities
+            )
+    
+    async def suggest_debt_strategy(self, user_id: str, liabilities: List[Dict[str, Any]], 
+                                  transactions: List[Dict[str, Any]],
+                                  strategy_type: str = "avalanche") -> Dict[str, Any]:
+        """Suggest optimal debt repayment strategy"""
+        if not self.has_advanced_features:
+            # Fallback to basic debt analysis
+            return {
+                "error": "Advanced debt strategy not available",
+                "analysis_type": "debt_strategy",
+                "strategy_type": strategy_type
+            }
+        
+        try:
+            validated_liabilities = await self.data_validator.validate_liabilities(liabilities)
+            validated_transactions = await self.data_validator.validate_transactions(transactions)
+            
+            # Calculate monthly surplus from transactions
+            monthly_patterns = self._analyze_monthly_cash_flow(validated_transactions, 3)
+            
+            monthly_surplus = 0
+            if monthly_patterns:
+                monthly_surplus = sum(m.get("net_flow", 0) for m in monthly_patterns) / len(monthly_patterns)
+            
+            result = self.advanced_analyzer.recommend_debt_repayment_strategy(
+                validated_liabilities, monthly_surplus, strategy_type
+            )
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Debt strategy analysis failed: {e}")
+            return {
+                "error": str(e), 
+                "analysis_type": "debt_strategy",
+                "strategy_type": strategy_type
+            }
+    
+    async def analyze_investment_portfolio(self, user_id: str, investments: List[Dict[str, Any]], 
+                                         risk_profile: str = "moderate") -> Dict[str, Any]:
+        """Analyze investment portfolio"""
+        if not self.has_advanced_features:
+            return {"error": "Advanced portfolio analysis not available", "total_value": 0}
+        
+        try:
+            validated_investments = await self.data_validator.validate_investments(investments)
+            result = self.advanced_analyzer.analyze_investment_portfolio(validated_investments, risk_profile)
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"Portfolio analysis failed: {e}")
+            return {"error": str(e), "total_value": 0}
+    
+    async def analyze_budget_performance(self, user_id: str, transactions: List[Dict[str, Any]], 
+                                       budget: Dict[str, Any]) -> Dict[str, Any]:
+        """Analyze budget performance against actual spending"""
+        # Validate transaction data
+        try:
+            if self.has_advanced_features:
+                valid_transactions = await self.data_validator.validate_transactions(transactions)
+            else:
+                valid_transactions = transactions
+        except Exception as e:
+            logger.error(f"Transaction validation error: {e}")
+            return {"error": "Invalid transaction data", "details": str(e)}
+        
+        # Extract relevant budget period
+        budget_month = budget.get("month", datetime.now().strftime("%Y-%m"))
+        budget_categories = budget.get("categories", {})
+        
+        # Filter transactions by budget period and expenses only
+        month_transactions = [
+            t for t in valid_transactions 
+            if t.get("date", "").startswith(budget_month) and t.get("amount", 0) < 0
+        ]
+        
+        # Group expenses by category
+        expenses_by_category = {}
+        for transaction in month_transactions:
+            category = transaction.get("category", "uncategorized")
+            amount = abs(transaction.get("amount", 0))
+            if category in expenses_by_category:
+                expenses_by_category[category] += amount
+            else:
+                expenses_by_category[category] = amount
+        
+        # Compare with budget limits
+        results = []
+        for category, limit in budget_categories.items():
+            spent = expenses_by_category.get(category, 0)
+            percentage = (spent / limit) * 100 if limit > 0 else 0
+            status = "on_track" if percentage <= 90 else "warning" if percentage <= 100 else "exceeded"
+            
+            results.append({
+                "category": category,
+                "budget_limit": limit,
+                "actual_spent": round(spent, 2),
+                "remaining": round(max(0, limit - spent), 2),
+                "percentage_used": round(percentage, 1),
+                "status": status
+            })
+        
+        # Add categories with spending but no budget
+        for category, spent in expenses_by_category.items():
+            if category not in budget_categories:
+                results.append({
+                    "category": category,
+                    "budget_limit": 0,
+                    "actual_spent": round(spent, 2),
+                    "remaining": 0,
+                    "percentage_used": 100,
+                    "status": "unbudgeted"
+                })
+        
+        # Sort by percentage used (descending)
+        results.sort(key=lambda x: x["percentage_used"], reverse=True)
+        
+        # Calculate overall budget performance
+        total_budget = sum(budget_categories.values())
+        total_spent = sum(expenses_by_category.values())
+        overall_percentage = (total_spent / total_budget) * 100 if total_budget > 0 else 0
+        
+        return {
+            "analysis_type": "budget_performance",
+            "budget_period": budget_month,
+            "total_budget": round(total_budget, 2),
+            "total_spent": round(total_spent, 2),
+            "overall_percentage_used": round(overall_percentage, 1),
+            "overall_status": "on_track" if overall_percentage <= 90 else "warning" if overall_percentage <= 100 else "exceeded",
+            "categories": results,
+            "insights": self._generate_budget_insights(results, overall_percentage),
+            "recommendations": self._generate_budget_recommendations(results, total_budget, total_spent),
+            "timestamp": datetime.now().isoformat()
+        }
+    
+    def _analyze_monthly_cash_flow(self, transactions: List[Dict[str, Any]], 
+                                 months_back: int) -> List[Dict[str, Any]]:
+        """Analyze monthly cash flow patterns - helper method"""
+        from collections import defaultdict
+        monthly_data = defaultdict(lambda: {"income": 0, "expenses": 0})
+        
+        for transaction in transactions:
+            try:
+                trans_date = datetime.fromisoformat(transaction.get("date", "").replace('Z', '+00:00'))
+                month_key = trans_date.strftime("%Y-%m")
+                amount = transaction.get("amount", 0)
+                
+                if amount > 0:
+                    monthly_data[month_key]["income"] += amount
+                else:
+                    monthly_data[month_key]["expenses"] += abs(amount)
+            except (ValueError, TypeError):
+                continue
+        
+        # Get last N months
+        result = []
+        for month_key in sorted(monthly_data.keys())[-months_back:]:
+            data = monthly_data[month_key]
+            result.append({
+                "month": month_key,
+                "income": data["income"],
+                "expenses": data["expenses"],
+                "net_flow": data["income"] - data["expenses"]
+            })
+        
+        return result
     
     def calculate_spending(self, data: Dict[str, Any], entities: Dict[str, Any]) -> Dict[str, Any]:
         """

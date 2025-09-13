@@ -8,8 +8,9 @@ import logging
 import uvicorn
 from datetime import datetime
 
-from .routers import insights, transactions, accounts, investments, privacy, chat, dashboard
+from .routers import insights, transactions, accounts, investments, privacy, chat, dashboard, auth
 from .services.data_service import DataService
+from .security import add_security_headers
 
 # Configure logging
 logging.basicConfig(
@@ -37,6 +38,7 @@ app.add_middleware(
 )
 
 # Include routers
+app.include_router(auth.router)
 app.include_router(insights.router)
 app.include_router(transactions.router)
 app.include_router(accounts.router)
@@ -143,7 +145,7 @@ async def http_exception_handler(request, exc):
 async def general_exception_handler(request, exc):
     """General exception handler for unexpected errors"""
     logger.error(f"Unexpected error: {str(exc)}")
-    return JSONResponse(
+    response = JSONResponse(
         status_code=500,
         content={
             "error": "Internal server error",
@@ -151,6 +153,14 @@ async def general_exception_handler(request, exc):
             "timestamp": datetime.utcnow().isoformat() + "Z"
         }
     )
+    return add_security_headers(response)
+
+
+@app.middleware("http")
+async def security_middleware(request, call_next):
+    """Add security headers to all responses"""
+    response = await call_next(request)
+    return add_security_headers(response)
 
 
 if __name__ == "__main__":

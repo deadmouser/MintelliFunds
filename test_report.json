@@ -1,0 +1,79 @@
+{
+  "backend": {
+    "passed": 2,
+    "failed": 7,
+    "tests": [
+      {
+        "name": "Backend Startup",
+        "passed": true,
+        "message": "Backend started successfully",
+        "timestamp": 1757801395.0889676
+      },
+      {
+        "name": "Health Check",
+        "passed": true,
+        "message": "\u2705 /api/health - 200",
+        "timestamp": 1757801397.1313536
+      },
+      {
+        "name": "Dashboard Data",
+        "passed": false,
+        "message": "\u274c /api/dashboard - Timeout",
+        "timestamp": 1757801404.1981852
+      },
+      {
+        "name": "Transactions",
+        "passed": false,
+        "message": "\u274c /api/transactions - Timeout",
+        "timestamp": 1757801411.2679617
+      },
+      {
+        "name": "Dashboard Insights",
+        "passed": false,
+        "message": "\u274c /api/insights/dashboard - Timeout",
+        "timestamp": 1757801418.332461
+      },
+      {
+        "name": "Privacy Status",
+        "passed": false,
+        "message": "\u274c /api/privacy/status - Timeout",
+        "timestamp": 1757801425.4009798
+      },
+      {
+        "name": "AI Chat Integration",
+        "passed": false,
+        "message": "\u274c AI service error: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=10)",
+        "timestamp": 1757801437.4818974
+      },
+      {
+        "name": "Data Structure Validation",
+        "passed": false,
+        "message": "\u274c Error: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=5)",
+        "timestamp": 1757801444.5750144
+      },
+      {
+        "name": "Response Time Performance",
+        "passed": false,
+        "message": "\u274c Error: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=5)",
+        "timestamp": 1757801451.6572998
+      }
+    ]
+  },
+  "integration": {
+    "passed": 0,
+    "failed": 0,
+    "tests": []
+  },
+  "dataset": {
+    "passed": 0,
+    "failed": 1,
+    "tests": [
+      {
+        "name": "Dataset Integration Readiness",
+        "passed": false,
+        "message": "\u274c Error: HTTPConnectionPool(host='localhost', port=8000): Read timed out. (read timeout=3)",
+        "timestamp": 1757801456.7196667
+      }
+    ]
+  }
+}

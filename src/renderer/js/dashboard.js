@@ -175,6 +175,9 @@ class Dashboard {
             // Load AI insights
             await this.loadAIInsights();
             
+            // Update last refresh time
+            this.updateLastRefreshTime();
+            
         } catch (error) {
             console.error('Error loading dashboard data:', error);
             this.showErrorState();
@@ -335,10 +338,27 @@ class Dashboard {
 
     async loadRecentTransactions() {
         try {
-            const transactions = await this.app.apiRequest('/api/recent-transactions?limit=5');
+            const response = await this.app.apiRequest('/api/transactions/recent?limit=5');
+            const transactions = response.transactions || response;
             this.renderRecentTransactions(transactions);
         } catch (error) {
             console.error('Error loading recent transactions:', error);
+            this.showTransactionsError();
+        }
+    }
+
+    showTransactionsError() {
+        const container = document.getElementById('recent-transactions');
+        if (container) {
+            container.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Unable to load recent transactions</p>
+                    <button class="btn btn-sm btn-outline-primary" onclick="app.dashboard.loadRecentTransactions()">
+                        <i class="fas fa-refresh"></i> Retry
+                    </button>
+                </div>
+            `;
         }
     }
 
@@ -375,10 +395,41 @@ class Dashboard {
 
     async loadAIInsights() {
         try {
-            const insights = await this.app.apiRequest('/api/dashboard-insights');
+            const response = await this.app.apiRequest('/api/insights/dashboard');
+            const insights = response.insights || response;
             this.renderAIInsights(insights);
         } catch (error) {
             console.error('Error loading AI insights:', error);
+            this.showInsightsError();
+        }
+    }
+
+    showInsightsError() {
+        const container = document.getElementById('ai-insights');
+        if (container) {
+            container.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Unable to load AI insights</p>
+                    <button class="btn btn-sm btn-outline-primary" onclick="app.dashboard.loadAIInsights()">
+                        <i class="fas fa-refresh"></i> Retry
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    updateLastRefreshTime() {
+        const refreshElement = document.getElementById('last-refresh-time');
+        if (refreshElement) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-IN', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            refreshElement.textContent = `Last updated: ${timeString}`;
+            refreshElement.style.opacity = '0.7';
+            refreshElement.style.fontSize = '0.8rem';
         }
     }
 

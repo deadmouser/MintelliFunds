@@ -6,7 +6,7 @@ from typing import Dict, Any
 import logging
 from datetime import datetime
 
-from ..models.requests import InsightsRequest, InsightsResponse
+from ..models.requests import InsightsRequest, InsightsResponse, Permissions
 from ..services.data_service import DataService
 from ..services.privacy_service import PrivacyService
 from ..services.nlp_service import NLPService
@@ -152,17 +152,70 @@ async def _perform_financial_analysis(intent: str, filtered_data: Dict[str, Any]
         
         if intent == "get_spending_summary" or intent == "get_spending_by_category":
             analysis_result["analysis_type"] = "spending_analysis"
-            analysis_result["results"] = analysis_service.calculate_spending(filtered_data, entities)
+            # Try advanced spending analysis first
+            try:
+                if analysis_service.has_advanced_features:
+                    user_id = "default_user"  # In real app, get from auth
+                    timeframe_days = entities.get("time_periods", [{}])[0].get("days", 30)
+                    advanced_result = await analysis_service.get_advanced_spending_analysis(
+                        user_id, filtered_data.get("transactions", []), timeframe_days
+                    )
+                    analysis_result["results"] = advanced_result
+                else:
+                    analysis_result["results"] = analysis_service.calculate_spending(filtered_data, entities)
+            except Exception as e:
+                logger.warning(f"Advanced spending analysis failed: {e}")
+                analysis_result["results"] = analysis_service.calculate_spending(filtered_data, entities)
             analysis_result["success"] = True
             
         elif intent == "project_future_balance" or intent == "get_savings_analysis":
             analysis_result["analysis_type"] = "savings_projection"
-            analysis_result["results"] = analysis_service.project_savings(filtered_data, entities)
+            # Try advanced balance forecasting first
+            try:
+                if analysis_service.has_advanced_features:
+                    user_id = "default_user"  # In real app, get from auth
+                    months_ahead = entities.get("time_periods", [{}])[0].get("months", 6)
+                    advanced_result = await analysis_service.get_balance_forecast(
+                        user_id,
+                        filtered_data.get("accounts", []),
+                        filtered_data.get("transactions", []),
+                        months_ahead
+                    )
+                    analysis_result["results"] = advanced_result
+                else:
+                    analysis_result["results"] = analysis_service.project_savings(filtered_data, entities)
+            except Exception as e:
+                logger.warning(f"Advanced balance forecast failed: {e}")
+                analysis_result["results"] = analysis_service.project_savings(filtered_data, entities)
             analysis_result["success"] = True
             
         elif intent == "check_affordability":
             analysis_result["analysis_type"] = "affordability_check"
-            analysis_result["results"] = analysis_service.check_affordability(filtered_data, entities)
+            # Try advanced affordability analysis first
+            try:
+                if analysis_service.has_advanced_features:
+                    user_id = "default_user"  # In real app, get from auth
+                    # Extract purchase amount from entities
+                    amounts = entities.get("amounts", [])
+                    if amounts:
+                        purchase_amount = amounts[0]
+                        target_item = entities.get("items", ["purchase"])[0]
+                        advanced_result = await analysis_service.analyze_purchase_affordability(
+                            user_id,
+                            filtered_data.get("accounts", []),
+                            filtered_data.get("transactions", []),
+                            filtered_data.get("liabilities", []),
+                            purchase_amount,
+                            target_item
+                        )
+                        analysis_result["results"] = advanced_result
+                    else:
+                        analysis_result["results"] = analysis_service.check_affordability(filtered_data, entities)
+                else:
+                    analysis_result["results"] = analysis_service.check_affordability(filtered_data, entities)
+            except Exception as e:
+                logger.warning(f"Advanced affordability analysis failed: {e}")
+                analysis_result["results"] = analysis_service.check_affordability(filtered_data, entities)
             analysis_result["success"] = True
             
         elif intent == "get_income_summary":
@@ -182,7 +235,23 @@ async def _perform_financial_analysis(intent: str, filtered_data: Dict[str, Any]
             
         elif intent == "get_financial_health":
             analysis_result["analysis_type"] = "financial_health"
-            analysis_result["results"] = _analyze_financial_health(filtered_data, entities)
+            # Try advanced financial health analysis first
+            try:
+                if analysis_service.has_advanced_features:
+                    user_id = "default_user"  # In real app, get from auth
+                    advanced_result = await analysis_service.get_financial_health_score(
+                        user_id,
+                        filtered_data.get("accounts", []),
+                        filtered_data.get("liabilities", []),
+                        filtered_data.get("transactions", []),
+                        filtered_data.get("investments", [])
+                    )
+                    analysis_result["results"] = advanced_result
+                else:
+                    analysis_result["results"] = _analyze_financial_health(filtered_data, entities)
+            except Exception as e:
+                logger.warning(f"Advanced financial health analysis failed: {e}")
+                analysis_result["results"] = _analyze_financial_health(filtered_data, entities)
             analysis_result["success"] = True
             
         else:
@@ -357,6 +426,232 @@ async def get_data_summary() -> Dict[str, Any]:
             status_code=500,
             detail=f"Failed to get data summary: {str(e)}"
         )
+
+
+@router.post("/analysis/anomalies")
+async def detect_anomalies(request: InsightsRequest) -> Dict[str, Any]:
+    """
+    Detect financial anomalies in transaction data
+    """
+    try:
+        logger.info("Detecting financial anomalies")
+        
+        # Load and filter data
+        all_data = data_service.load_all_data()
+        filtered_data = privacy_service.filter_data_by_permissions(all_data, request.permissions)
+        
+        # Use advanced anomaly detection if available
+        if analysis_service.has_advanced_features:
+            user_id = "default_user"  # In real app, get from auth
+            result = await analysis_service.detect_anomalies(
+                user_id, filtered_data.get("transactions", [])
+            )
+        else:
+            result = {"error": "Advanced anomaly detection not available", "anomalies": []}
+        
+        return {
+            "anomaly_analysis": result,
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error detecting anomalies: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+
+@router.post("/analysis/debt-strategy")
+async def get_debt_strategy(request: InsightsRequest) -> Dict[str, Any]:
+    """
+    Get optimal debt repayment strategy
+    """
+    try:
+        logger.info("Analyzing debt repayment strategy")
+        
+        # Load and filter data
+        all_data = data_service.load_all_data()
+        filtered_data = privacy_service.filter_data_by_permissions(all_data, request.permissions)
+        
+        # Use advanced debt strategy analysis if available
+        if analysis_service.has_advanced_features:
+            user_id = "default_user"  # In real app, get from auth
+            # Extract strategy type from query (avalanche or snowball)
+            strategy_type = "avalanche"  # Default
+            if "snowball" in request.query.lower():
+                strategy_type = "snowball"
+            
+            # Try to use suggest_debt_strategy method
+            try:
+                result = await analysis_service.suggest_debt_strategy(
+                    user_id,
+                    filtered_data.get("liabilities", []),
+                    filtered_data.get("transactions", []),
+                    strategy_type
+                )
+            except AttributeError:
+                # Method doesn't exist, fall back to basic analysis
+                result = _analyze_debt(filtered_data, {})
+        else:
+            result = _analyze_debt(filtered_data, {})
+        
+        return {
+            "debt_strategy": result,
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error analyzing debt strategy: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+
+@router.post("/analysis/portfolio")
+async def analyze_portfolio(request: InsightsRequest) -> Dict[str, Any]:
+    """
+    Analyze investment portfolio allocation and performance
+    """
+    try:
+        logger.info("Analyzing investment portfolio")
+        
+        # Load and filter data
+        all_data = data_service.load_all_data()
+        filtered_data = privacy_service.filter_data_by_permissions(all_data, request.permissions)
+        
+        # Use advanced portfolio analysis if available
+        if analysis_service.has_advanced_features:
+            user_id = "default_user"  # In real app, get from auth
+            # Extract risk profile from query
+            risk_profile = "moderate"  # Default
+            if "conservative" in request.query.lower():
+                risk_profile = "conservative"
+            elif "aggressive" in request.query.lower():
+                risk_profile = "aggressive"
+            
+            # Try to use analyze_investment_portfolio method
+            try:
+                result = await analysis_service.analyze_investment_portfolio(
+                    user_id,
+                    filtered_data.get("investments", []),
+                    risk_profile
+                )
+            except AttributeError:
+                # Method doesn't exist, fall back to basic analysis
+                result = _analyze_investments(filtered_data, {})
+        else:
+            result = _analyze_investments(filtered_data, {})
+        
+        return {
+            "portfolio_analysis": result,
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error analyzing portfolio: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+
+@router.post("/analysis/budget")
+async def analyze_budget(request: InsightsRequest, budget_data: Dict[str, Any] = None) -> Dict[str, Any]:
+    """
+    Analyze budget performance against actual spending
+    """
+    try:
+        logger.info("Analyzing budget performance")
+        
+        # Load and filter data
+        all_data = data_service.load_all_data()
+        filtered_data = privacy_service.filter_data_by_permissions(all_data, request.permissions)
+        
+        # Create a sample budget if none provided
+        if not budget_data:
+            budget_data = {
+                "month": datetime.now().strftime("%Y-%m"),
+                "categories": {
+                    "food": 15000,
+                    "transportation": 8000,
+                    "entertainment": 5000,
+                    "utilities": 3000,
+                    "shopping": 10000
+                }
+            }
+        
+        # Use advanced budget analysis if available
+        if analysis_service.has_advanced_features:
+            user_id = "default_user"  # In real app, get from auth
+            # Try to use analyze_budget_performance method
+            try:
+                result = await analysis_service.analyze_budget_performance(
+                    user_id,
+                    filtered_data.get("transactions", []),
+                    budget_data
+                )
+            except AttributeError:
+                # Method doesn't exist, fall back to basic analysis
+                result = _analyze_spending_vs_budget(filtered_data, budget_data)
+        else:
+            result = _analyze_spending_vs_budget(filtered_data, budget_data)
+        
+        return {
+            "budget_analysis": result,
+            "timestamp": datetime.utcnow().isoformat() + "Z"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error analyzing budget: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
+
+def _analyze_spending_vs_budget(filtered_data: Dict[str, Any], budget_data: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Basic budget vs spending analysis fallback
+    """
+    transactions = filtered_data.get("transactions", [])
+    budget_month = budget_data.get("month", datetime.now().strftime("%Y-%m"))
+    budget_categories = budget_data.get("categories", {})
+    
+    # Filter transactions for the budget month
+    month_transactions = [
+        t for t in transactions 
+        if t.get("date", "").startswith(budget_month) and t.get("amount", 0) < 0
+    ]
+    
+    # Calculate spending by category
+    spending_by_category = {}
+    for transaction in month_transactions:
+        category = transaction.get("category", "other")
+        amount = abs(transaction.get("amount", 0))
+        if category in spending_by_category:
+            spending_by_category[category] += amount
+        else:
+            spending_by_category[category] = amount
+    
+    # Compare with budget
+    results = []
+    total_budget = sum(budget_categories.values())
+    total_spent = sum(spending_by_category.values())
+    
+    for category, budget_amount in budget_categories.items():
+        spent = spending_by_category.get(category, 0)
+        percentage = (spent / budget_amount * 100) if budget_amount > 0 else 0
+        status = "over" if percentage > 100 else "on_track"
+        
+        results.append({
+            "category": category,
+            "budget": budget_amount,
+            "spent": round(spent, 2),
+            "percentage": round(percentage, 1),
+            "status": status
+        })
+    
+    return {
+        "budget_period": budget_month,
+        "total_budget": total_budget,
+        "total_spent": round(total_spent, 2),
+        "overall_percentage": round((total_spent / total_budget * 100) if total_budget > 0 else 0, 1),
+        "categories": results,
+        "insights": [
+            f"Total spending: ₹{total_spent:,.2f} vs budget: ₹{total_budget:,.2f}",
+            f"Overall budget usage: {(total_spent / total_budget * 100) if total_budget > 0 else 0:.1f}%"
+        ]
+    }
 
 
 @router.post("/insights/generate")

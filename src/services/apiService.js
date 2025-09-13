@@ -1,10 +1,11 @@
 // API Service Layer for Backend Integration
 class APIService {
     constructor() {
-        this.baseURL = 'http://localhost:3001'; // Your backend API URL
+        this.baseURL = 'http://localhost:8000'; // Backend API URL - matches FastAPI server
         this.authToken = null;
         this.retryCount = 3;
         this.timeout = 10000; // 10 seconds
+        this.isOnline = navigator.onLine;
         
         this.init();
     }

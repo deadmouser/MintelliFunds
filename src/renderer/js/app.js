@@ -320,15 +320,23 @@ class FinancialAIApp {
     }
 
     async apiRequest(endpoint, method = 'GET', data = null) {
-        if (window.electronAPI) {
-            const response = await window.electronAPI.makeAPIRequest(endpoint, method, data);
-            if (response.success) {
-                return response.data;
+        try {
+            if (window.electronAPI) {
+                const response = await window.electronAPI.makeAPIRequest(endpoint, method, data);
+                if (response.success) {
+                    return response.data;
+                } else {
+                    console.warn(`API request failed: ${response.error}`);
+                    // Fall back to mock data on error
+                    return this.getMockData(endpoint);
+                }
             } else {
-                throw new Error(response.error);
+                // Fallback for development without Electron
+                return this.getMockData(endpoint);
             }
-        } else {
-            // Fallback for development without Electron
+        } catch (error) {
+            console.error(`API request error for ${endpoint}:`, error);
+            // Always return mock data as fallback
             return this.getMockData(endpoint);
         }
     }

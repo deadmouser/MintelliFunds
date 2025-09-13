@@ -1,0 +1,149 @@
+{
+  "intent_examples": [
+    {
+      "query": "How much did I spend on food last month?",
+      "intent": "get_spending_by_category",
+      "entities": {
+        "category": "food",
+        "timeframe": "last_month"
+      },
+      "privacy_requirements": ["transactions", "spending_trends"],
+      "expected_analysis": "spending_analysis"
+    },
+    {
+      "query": "Can I afford to buy a car worth 8 lakh rupees?",
+      "intent": "check_affordability",
+      "entities": {
+        "item": "car",
+        "amount": 800000,
+        "currency": "INR"
+      },
+      "privacy_requirements": ["accounts", "transactions", "liabilities"],
+      "expected_analysis": "affordability_check"
+    },
+    {
+      "query": "What's my total investment value?",
+      "intent": "get_investment_summary",
+      "entities": {
+        "metric": "total_value"
+      },
+      "privacy_requirements": ["investments"],
+      "expected_analysis": "investment_analysis"
+    },
+    {
+      "query": "Show me my spending trends for the last 3 months",
+      "intent": "get_spending_trends",
+      "entities": {
+        "timeframe": "last_3_months"
+      },
+      "privacy_requirements": ["transactions", "spending_trends"],
+      "expected_analysis": "spending_analysis"
+    },
+    {
+      "query": "How much money will I have saved in 6 months?",
+      "intent": "project_future_balance",
+      "entities": {
+        "timeframe": "6_months",
+        "projection_type": "savings"
+      },
+      "privacy_requirements": ["accounts", "transactions"],
+      "expected_analysis": "savings_projection"
+    },
+    {
+      "query": "What's my current financial health score?",
+      "intent": "get_financial_health",
+      "entities": {},
+      "privacy_requirements": ["accounts", "liabilities", "investments", "transactions"],
+      "expected_analysis": "financial_health"
+    },
+    {
+      "query": "Should I invest more in mutual funds?",
+      "intent": "get_investment_advice",
+      "entities": {
+        "investment_type": "mutual_funds",
+        "action": "increase"
+      },
+      "privacy_requirements": ["investments", "accounts", "assets"],
+      "expected_analysis": "investment_advice"
+    },
+    {
+      "query": "My monthly salary is getting credited, can you analyze it?",
+      "intent": "analyze_income",
+      "entities": {
+        "income_type": "salary",
+        "frequency": "monthly"
+      },
+      "privacy_requirements": ["transactions", "accounts"],
+      "expected_analysis": "income_analysis"
+    },
+    {
+      "query": "How much debt do I currently have?",
+      "intent": "get_debt_summary",
+      "entities": {
+        "metric": "total_debt"
+      },
+      "privacy_requirements": ["liabilities"],
+      "expected_analysis": "debt_analysis"
+    },
+    {
+      "query": "Create a budget plan for next month",
+      "intent": "create_budget",
+      "entities": {
+        "timeframe": "next_month"
+      },
+      "privacy_requirements": ["transactions", "accounts", "spending_trends"],
+      "expected_analysis": "budget_planning"
+    }
+  ],
+  "entity_patterns": {
+    "amounts": {
+      "patterns": [
+        "₹\\d{1,3}(,\\d{3})*(\\.\\d{2})?",
+        "\\d+ lakh",
+        "\\d+ crore",
+        "Rs\\.?\\s*\\d+",
+        "INR\\s*\\d+"
+      ],
+      "examples": ["₹50,000", "5 lakh", "2.5 crore", "Rs. 1000", "INR 25000"]
+    },
+    "timeframes": {
+      "patterns": [
+        "last (week|month|year|\\d+ months?)",
+        "this (week|month|year)",
+        "next (week|month|year)",
+        "in \\d+ months?",
+        "past \\d+ (days?|weeks?|months?|years?)"
+      ],
+      "examples": ["last month", "this year", "next week", "in 6 months", "past 3 months"]
+    },
+    "categories": {
+      "financial": ["food", "transport", "utilities", "entertainment", "shopping", "health", "education", "rent", "insurance"],
+      "investment": ["mutual funds", "stocks", "FD", "EPF", "PPF", "SIP", "ELSS"],
+      "accounts": ["savings", "current", "salary", "credit card"]
+    }
+  },
+  "response_templates": {
+    "spending_analysis": {
+      "template": "Based on your {category} spending, you spent ₹{amount} {timeframe}. This is {change}% compared to the previous period. {insights}",
+      "variables": ["category", "amount", "timeframe", "change", "insights"]
+    },
+    "affordability_check": {
+      "template": "Based on your current financial position, you {can_afford} afford {item} worth ₹{amount}. Your available balance is ₹{available}, and after this purchase you'd have ₹{remaining}. {recommendation}",
+      "variables": ["can_afford", "item", "amount", "available", "remaining", "recommendation"]
+    },
+    "investment_summary": {
+      "template": "Your total investment portfolio is worth ₹{total_value}, with a {change}% change this month. Your investments include: {breakdown}. {recommendation}",
+      "variables": ["total_value", "change", "breakdown", "recommendation"]
+    },
+    "financial_health": {
+      "template": "Your financial health score is {score}/100. Your net worth is ₹{net_worth}, with assets worth ₹{assets} and liabilities of ₹{liabilities}. {insights}",
+      "variables": ["score", "net_worth", "assets", "liabilities", "insights"]
+    }
+  },
+  "privacy_fallbacks": {
+    "transactions": "I need access to your transaction data to provide spending analysis. Please enable transaction permissions in Privacy Settings.",
+    "accounts": "To analyze your financial position, I need access to your account information. Please enable account permissions.",
+    "investments": "For investment analysis, I need access to your investment data. Please enable investment permissions.",
+    "liabilities": "To check affordability or debt analysis, I need access to your debt information. Please enable liability permissions."
+  }
+}
