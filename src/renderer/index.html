@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial AI Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <h2>Financial AI Assistant</h2>
+                <p>Loading your financial insights...</p>
+            </div>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    <span>FinanceAI</span>
+                </div>
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active" data-section="dashboard">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-section="chat">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-robot"></i>
+                        <span>AI Assistant</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-section="transactions">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>Transactions</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-section="insights">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Insights</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-section="privacy">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Privacy Settings</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <div class="privacy-status">
+                    <i class="fas fa-lock"></i>
+                    <span>Privacy Protected</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h1>Financial Dashboard</h1>
+                    <div class="header-actions">
+                        <button id="refresh-data" class="btn btn-secondary">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="summary-cards">
+                    <div class="card summary-card">
+                        <div class="card-header">
+                            <h3>Total Balance</h3>
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="amount" id="total-balance">₹0</div>
+                            <div class="change positive" id="balance-change">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+0% this month</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card summary-card">
+                        <div class="card-header">
+                            <h3>Monthly Spending</h3>
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="amount" id="monthly-spending">₹0</div>
+                            <div class="change negative" id="spending-change">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>-0% vs last month</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card summary-card">
+                        <div class="card-header">
+                            <h3>Savings Goal</h3>
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="amount" id="savings-progress">₹0</div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="savings-progress-bar" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-text" id="savings-percentage">0% of ₹0 goal</div>
+                        </div>
+                    </div>
+
+                    <div class="card summary-card">
+                        <div class="card-header">
+                            <h3>Investment Value</h3>
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="amount" id="investment-value">₹0</div>
+                            <div class="change positive" id="investment-change">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+0% this month</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and Analytics -->
+                <div class="dashboard-grid">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Spending Trends</h3>
+                            <div class="card-actions">
+                                <select id="chart-period">
+                                    <option value="7d">7 Days</option>
+                                    <option value="1m" selected>1 Month</option>
+                                    <option value="3m">3 Months</option>
+                                    <option value="1y">1 Year</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="spending-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Category Breakdown</h3>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="category-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Transactions</h3>
+                            <a href="#" class="view-all" data-section="transactions">View All</a>
+                        </div>
+                        <div class="card-body">
+                            <div id="recent-transactions" class="transaction-list">
+                                <!-- Transactions will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card insight-card">
+                        <div class="card-header">
+                            <h3>AI Insights</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="ai-insights" class="insights-list">
+                                <!-- AI insights will be loaded here -->
+                            </div>
+                            <button id="get-more-insights" class="btn btn-primary">
+                                <i class="fas fa-brain"></i>
+                                Get More Insights
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Chat Section -->
+            <section id="chat-section" class="content-section">
+                <div class="section-header">
+                    <h1>AI Financial Assistant</h1>
+                    <div class="header-actions">
+                        <button id="clear-chat" class="btn btn-secondary">
+                            <i class="fas fa-trash"></i>
+                            Clear Chat
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message ai-message">
+                            <div class="message-avatar">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-text">
+                                    Hello! I'm your AI financial assistant. I can help you understand your spending patterns, 
+                                    create budgets, plan investments, and answer any questions about your financial data. 
+                                    What would you like to know?
+                                </div>
+                                <div class="message-time">Just now</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-suggestions">
+                        <button class="suggestion-btn" data-message="What are my biggest expenses this month?">
+                            What are my biggest expenses?
+                        </button>
+                        <button class="suggestion-btn" data-message="Can I afford a vacation worth ₹50,000?">
+                            Can I afford a vacation?
+                        </button>
+                        <button class="suggestion-btn" data-message="How can I save more money?">
+                            How can I save more?
+                        </button>
+                        <button class="suggestion-btn" data-message="Show me my investment performance">
+                            Investment performance
+                        </button>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <div class="chat-input-wrapper">
+                            <input type="text" id="chat-input" placeholder="Ask me anything about your finances..." />
+                            <button id="send-message" class="send-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="input-status">
+                            <div id="typing-indicator" class="typing-indicator" style="display: none;">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Privacy Settings Section -->
+            <section id="privacy-section" class="content-section">
+                <div class="section-header">
+                    <h1>Privacy & Data Controls</h1>
+                    <div class="header-info">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Control what data the AI can access to provide insights</span>
+                    </div>
+                </div>
+
+                <div class="privacy-controls">
+                    <div class="card privacy-card">
+                        <div class="card-header">
+                            <h3>Data Access Permissions</h3>
+                            <p>Toggle access to different categories of your financial data</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="privacy-toggles">
+                                <div class="privacy-toggle">
+                                    <div class="toggle-info">
+                                        <div class="toggle-title">
+                                            <i class="fas fa-credit-card"></i>
+                                            <span>Transaction Data</span>
+                                        </div>
+                                        <div class="toggle-description">
+                                            Allow AI to analyze your transaction history for spending insights
+                                        </div>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="transactions-toggle" checked>
+                                        <label for="transactions-toggle"></label>
+                                    </div>
+                                </div>
+
+                                <div class="privacy-toggle">
+                                    <div class="toggle-info">
+                                        <div class="toggle-title">
+                                            <i class="fas fa-wallet"></i>
+                                            <span>Account Balances</span>
+                                        </div>
+                                        <div class="toggle-description">
+                                            Share account balance information for financial planning
+                                        </div>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="balances-toggle" checked>
+                                        <label for="balances-toggle"></label>
+                                    </div>
+                                </div>
+
+                                <div class="privacy-toggle">
+                                    <div class="toggle-info">
+                                        <div class="toggle-title">
+                                            <i class="fas fa-chart-line"></i>
+                                            <span>Investment Portfolio</span>
+                                        </div>
+                                        <div class="toggle-description">
+                                            Include investment data for portfolio analysis and recommendations
+                                        </div>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="investments-toggle" checked>
+                                        <label for="investments-toggle"></label>
+                                    </div>
+                                </div>
+
+                                <div class="privacy-toggle">
+                                    <div class="toggle-info">
+                                        <div class="toggle-title">
+                                            <i class="fas fa-building"></i>
+                                            <span>EPF & Retirement</span>
+                                        </div>
+                                        <div class="toggle-description">
+                                            Access EPF and retirement fund data for long-term planning
+                                        </div>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="epf-toggle" checked>
+                                        <label for="epf-toggle"></label>
+                                    </div>
+                                </div>
+
+                                <div class="privacy-toggle">
+                                    <div class="toggle-info">
+                                        <div class="toggle-title">
+                                            <i class="fas fa-award"></i>
+                                            <span>Credit Score</span>
+                                        </div>
+                                        <div class="toggle-description">
+                                            Use credit score information for credit-related insights
+                                        </div>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="credit-toggle" checked>
+                                        <label for="credit-toggle"></label>
+                                    </div>
+                                </div>
+
+                                <div class="privacy-toggle">
+                                    <div class="toggle-info">
+                                        <div class="toggle-title">
+                                            <i class="fas fa-home"></i>
+                                            <span>Assets & Liabilities</span>
+                                        </div>
+                                        <div class="toggle-description">
+                                            Include property, loans, and debt information for net worth calculations
+                                        </div>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="assets-toggle" checked>
+                                        <label for="assets-toggle"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Data Security</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="security-info">
+                                <div class="security-item">
+                                    <i class="fas fa-lock"></i>
+                                    <div>
+                                        <strong>End-to-End Encryption</strong>
+                                        <p>All your financial data is encrypted and secure</p>
+                                    </div>
+                                </div>
+                                <div class="security-item">
+                                    <i class="fas fa-server"></i>
+                                    <div>
+                                        <strong>Local Processing</strong>
+                                        <p>Sensitive calculations happen on your device</p>
+                                    </div>
+                                </div>
+                                <div class="security-item">
+                                    <i class="fas fa-eye-slash"></i>
+                                    <div>
+                                        <strong>No Data Sharing</strong>
+                                        <p>Your data is never shared with third parties</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Other sections (Transactions, Insights) will be added here -->
+            <section id="transactions-section" class="content-section">
+                <div class="section-header">
+                    <h1>Transaction History</h1>
+                    <div class="header-actions">
+                        <input type="search" id="transaction-search" placeholder="Search transactions...">
+                        <select id="transaction-filter">
+                            <option value="">All Categories</option>
+                            <option value="food">Food & Dining</option>
+                            <option value="transport">Transportation</option>
+                            <option value="shopping">Shopping</option>
+                            <option value="bills">Bills & Utilities</option>
+                            <option value="entertainment">Entertainment</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="transactions-list" class="transactions-container">
+                    <!-- Transactions will be loaded here -->
+                </div>
+            </section>
+
+            <section id="insights-section" class="content-section">
+                <div class="section-header">
+                    <h1>Financial Insights</h1>
+                    <div class="header-actions">
+                        <button id="generate-insights" class="btn btn-primary">
+                            <i class="fas fa-brain"></i>
+                            Generate New Insights
+                        </button>
+                    </div>
+                </div>
+                <div id="insights-list" class="insights-container">
+                    <!-- Insights will be loaded here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/privacy.js"></script>
+</body>
+</html>
