@@ -29,6 +29,14 @@ from privacy_manager import PrivacyManager, ConsentManager, DataCategory, Permis
 from nlp_interface import FinancialNLPProcessor
 from data_preprocessing import AdvancedDataPreprocessor, UserPermissions
 
+# Import LLM NLP processor (optional)
+try:
+    from llm_nlp_interface import LLMFinancialNLPProcessor
+    LLM_AVAILABLE = True
+except ImportError:
+    LLM_AVAILABLE = False
+    logger.warning("LLM NLP processor not available. Using rule-based NLP processor.")
+
 # Initialize Flask app
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'dev-key-change-in-production')
@@ -41,7 +49,20 @@ logger.add("api_server.log", rotation="10 MB", level="INFO")
 insights_engine = AdvancedInsightsEngine()
 privacy_manager = PrivacyManager("production_privacy.db")
 consent_manager = ConsentManager(privacy_manager)
-nlp_processor = FinancialNLPProcessor(insights_engine, privacy_manager)
+
+# Use LLM-based NLP processor if available and configured, otherwise use rule-based
+if LLM_AVAILABLE and os.getenv("USE_LLM_NLP", "false").lower() == "true":
+    try:
+        nlp_processor = LLMFinancialNLPProcessor(insights_engine, privacy_manager)
+        logger.info("Using LLM-based NLP processor")
+    except Exception as e:
+        logger.error(f"Failed to initialize LLM NLP processor: {e}")
+        nlp_processor = FinancialNLPProcessor(insights_engine, privacy_manager)
+        logger.info("Falling back to rule-based NLP processor")
+else:
+    nlp_processor = FinancialNLPProcessor(insights_engine, privacy_manager)
+    logger.info("Using rule-based NLP processor")
+
 data_preprocessor = AdvancedDataPreprocessor()
 
 logger.info("Financial AI API Server initialized")
@@ -567,7 +588,7 @@ def api_documentation():
     docs = {
         'title': 'Financial AI Assistant API',
         'version': '1.0.0',
-        'description': 'Comprehensive API for AI-powered financial analysis and advice',
+        'description': 'Comprehensive API for AI-powered financial analysis and advice\n\n**LLM Integration**: This API can be configured to use advanced LLMs via OpenRouter for more sophisticated natural language understanding. Set the `USE_LLM_NLP=true` environment variable and provide an `OPENROUTER_API_KEY` to enable this feature.',
         'endpoints': {
             'Authentication': {
                 'POST /api/auth/login': 'Authenticate user',

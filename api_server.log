@@ -1,0 +1,27 @@
+2025-09-14 09:08:36.343 | INFO     | __main__:log_api_access:96 - API Access: {"endpoint": "chat_message", "user_id": "test_user_123", "timestamp": "2025-09-14T09:08:36.343881", "ip_address": "127.0.0.1", "user_agent": "curl/8.15.0", "request_hash": "9f4a51aaae418ccc22ce0ee14b0f1eeb"}
+2025-09-14 09:08:36.344 | INFO     | nlp_interface:_init_database:145 - Conversation database initialized
+2025-09-14 09:08:36.344 | INFO     | nlp_interface:__init__:104 - Financial NLP processor initialized
+2025-09-14 09:08:36.349 | INFO     | nlp_interface:_init_database:145 - Conversation database initialized
+2025-09-14 09:08:36.349 | INFO     | nlp_interface:__init__:104 - Financial NLP processor initialized
+2025-09-14 09:08:44.213 | INFO     | insights_engine:generate_comprehensive_analysis:107 - Starting comprehensive financial analysis
+2025-09-14 09:08:44.216 | INFO     | insights_engine:generate_comprehensive_analysis:126 - Comprehensive financial analysis completed
+2025-09-14 09:08:44.221 | INFO     | nlp_interface:_init_database:145 - Conversation database initialized
+2025-09-14 09:08:44.222 | INFO     | nlp_interface:__init__:104 - Financial NLP processor initialized
+2025-09-14 09:09:44.795 | INFO     | privacy_manager:_init_database:141 - Privacy database initialized
+2025-09-14 09:09:44.795 | INFO     | privacy_manager:__init__:87 - Privacy manager initialized
+2025-09-14 09:09:44.796 | INFO     | nlp_interface:_init_database:145 - Conversation database initialized
+2025-09-14 09:09:44.796 | INFO     | nlp_interface:__init__:104 - Financial NLP processor initialized
+2025-09-14 09:09:44.796 | INFO     | nlp_interface:_init_database:145 - Conversation database initialized
+2025-09-14 09:09:44.796 | INFO     | llm_nlp_interface:__init__:39 - LLM Financial NLP processor initialized
+2025-09-14 09:09:44.796 | INFO     | __main__:<module>:57 - Using LLM-based NLP processor
+2025-09-14 09:09:44.796 | INFO     | __main__:<module>:68 - Financial AI API Server initialized
+2025-09-14 09:09:44.802 | INFO     | __main__:<module>:639 - Starting Financial AI API Server on 127.0.0.1:5000
+2025-09-14 09:10:01.838 | INFO     | privacy_manager:_init_database:141 - Privacy database initialized
+2025-09-14 09:10:01.838 | INFO     | privacy_manager:__init__:87 - Privacy manager initialized
+2025-09-14 09:10:01.838 | INFO     | nlp_interface:_init_database:145 - Conversation database initialized
+2025-09-14 09:10:01.839 | INFO     | nlp_interface:__init__:104 - Financial NLP processor initialized
+2025-09-14 09:10:01.839 | INFO     | nlp_interface:_init_database:145 - Conversation database initialized
+2025-09-14 09:10:01.839 | INFO     | llm_nlp_interface:__init__:39 - LLM Financial NLP processor initialized
+2025-09-14 09:10:01.839 | INFO     | __main__:<module>:57 - Using LLM-based NLP processor
+2025-09-14 09:10:01.839 | INFO     | __main__:<module>:68 - Financial AI API Server initialized
+2025-09-14 09:10:01.845 | INFO     | __main__:<module>:639 - Starting Financial AI API Server on 127.0.0.1:5000

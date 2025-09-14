@@ -1,0 +1,30 @@
+{
+  "assets": {
+    "cash": 50000,
+    "bank_balances": 150000,
+    "property": 5000000
+  },
+  "liabilities": {
+    "loans": 2500000,
+    "credit_card_debt": 45000
+  },
+  "transactions": {
+    "income": 200000,
+    "expenses": 120000,
+    "transfers": 20000
+  },
+  "epf_retirement_balance": {
+    "contributions": 15000,
+    "employer_match": 7500,
+    "current_balance": 800000
+  },
+  "credit_score": {
+    "score": 750,
+    "rating": "Good"
+  },
+  "investments": {
+    "stocks": 300000,
+    "mutual_funds": 200000,
+    "bonds": 100000
+  }
+}

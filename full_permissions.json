@@ -1,0 +1,8 @@
+{
+  "assets": true,
+  "liabilities": true,
+  "transactions": true,
+  "epf_retirement_balance": true,
+  "credit_score": true,
+  "investments": true
+}
