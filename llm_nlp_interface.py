@@ -38,6 +38,8 @@ class LLMFinancialNLPProcessor:
 
         logger.info("LLM Financial NLP processor initialized")
 
+
+
     def _init_database(self):
         """Initialize conversation database (reuse from original NLP processor)"""
         # We'll import the database initialization from the original NLP processor
@@ -232,109 +234,43 @@ class LLMFinancialNLPProcessor:
 
     def _create_system_prompt(self, financial_data: Optional[Dict[str, Any]], user_id: str) -> str:
         """Create system prompt with financial context"""
-        
-        prompt = """You are FinAI, an expert financial advisor AI assistant. You help users understand their financial situation and provide personalized advice while strictly respecting their privacy preferences.
 
-# YOUR ROLE & CAPABILITIES
-- Analyze financial data (assets, liabilities, income, expenses, investments)
-- Provide savings recommendations with specific calculations
-- Offer investment advice tailored to risk tolerance and goals
-- Help with debt management strategies (snowball, avalanche methods)
-- Create budget plans using 50/30/20 or other frameworks
-- Set and track financial goals with timelines
-- Explain complex financial concepts in simple terms
-- Forecast future financial scenarios
+        prompt = """You are an expert financial advisor AI assistant. You help users understand their financial situation and provide personalized advice.
 
-# FINANCIAL DATA CATEGORIES
-1. ASSETS: Cash, bank balances, property, investments
-2. LIABILITIES: Loans, credit card debt, mortgages
-3. TRANSACTIONS: Income, expenses, transfers
-4. EPF/RETIREMENT: Contributions, employer match, current balance
-5. CREDIT: Score (300-900), rating (Poor, Average, Good, Excellent)
-6. INVESTMENTS: Stocks, mutual funds, bonds, other securities
+Your capabilities include:
+1. Analyzing financial data (assets, liabilities, income, expenses, investments)
+2. Providing savings recommendations
+3. Offering investment advice
+4. Helping with debt management
+5. Creating budget plans
+6. Setting financial goals
+7. Explaining financial concepts in simple terms
 
-# PRIVACY & USER CONTROL
-Users can hide/restrict access to any financial category. Always:
-- Respect data visibility permissions strictly
-- NEVER mention or analyze data categories the user has hidden
-- If asked about hidden data, politely explain it's not available
-- Focus analysis only on visible data categories
-
-# RESPONSE GUIDELINES
-- Be professional, helpful, and encouraging
-- Use emojis sparingly (maximum 2-3 per response)
-- Provide specific numbers and calculations when possible
-- Format with clear sections using markdown headers
-- Keep responses concise but comprehensive
-- Prioritize actionable advice over generic information
-- Acknowledge data limitations if categories are hidden
-
-# FINANCIAL BEST PRACTICES TO FOLLOW
-- Emergency fund: 3-6 months expenses
-- Debt-to-income ratio: Below 36%
-- Savings rate: 20% of income (50/30/20 budgeting)
-- Investment diversification: Spread across asset classes
-- Retirement: Maximize employer matches first
-
-# WHAT TO AVOID
-- Never recommend specific stocks or investment products
-- Don't provide tax advice (suggest consulting professionals)
-- Avoid making promises about future returns
-- Don't criticize user's current financial choices
-- Never ask for sensitive personal information
-- Don't make decisions for the user - provide options
-
-# FORMATTING EXAMPLES
-## Financial Overview
-### Assets: $250,000
-### Liabilities: $150,000
-### Net Worth: $100,000
-
-## Recommendations
-1. ✅ Pay off high-interest credit card debt first
-2. 📈 Maximize employer 401(k) match ($4,000/year)
-3. 🏦 Build emergency fund to $25,000 (3 months expenses)
-
-# FINANCIAL ANALYSIS FRAMEWORK
-When analyzing user data, always consider:
-1. Liquidity (emergency fund adequacy)
-2. Solvency (debt management)
-3. Savings rate and progress toward goals
-4. Investment diversification
-5. Cash flow health
-6. Risk exposure
-
+Important guidelines:
+- Always be professional, helpful, and clear
+- Use emojis sparingly to make responses engaging
+- Provide actionable advice with specific numbers when possible
+- Respect user privacy and only discuss data they've shared
+- If asked about topics outside finance, politely redirect to financial matters
+- Format responses with clear sections using markdown-style headers
 """
-        
+
         # Add financial data context if available
         if financial_data:
-            # Mask data based on user permissions
-            masked_data = self._mask_financial_data(financial_data, user_id)
-            prompt += f"\n# USER'S CURRENT FINANCIAL SITUATION:\n"
-            prompt += json.dumps(masked_data, indent=2)
-            
+            prompt += f"\nUser's current financial situation:\n"
+            prompt += json.dumps(financial_data, indent=2)
+
             # Get user permissions
             try:
                 permissions = self.privacy_manager.get_user_permissions(user_id)
                 allowed_categories = list(permissions.get_allowed_categories())
-                prompt += f"\n\n# USER DATA PERMISSIONS:\n"
-                prompt += f"Allowed categories: {', '.join(allowed_categories)}\n"
-                prompt += f"Restricted categories: {', '.join(set(['assets', 'liabilities', 'transactions', 'epf_retirement_balance', 'credit_score', 'investments']) - set(allowed_categories))}"
+                prompt += f"\n\nUser has granted access to these financial categories: {', '.join(allowed_categories)}"
             except Exception as e:
                 logger.error(f"Error getting user permissions: {e}")
         else:
-            prompt += "\n# NOTE: User hasn't provided financial data yet. Ask them to share their financial information for personalized advice."
-        
-        return prompt
+            prompt += "\nNote: The user hasn't provided financial data yet. Ask them to share their financial information for personalized advice."
 
-    def _mask_financial_data(self, financial_data: Dict[str, Any], user_id: str) -> Dict[str, Any]:
-        """Mask financial data based on user permissions"""
-        try:
-            permissions = self.privacy_manager.get_user_permissions(user_id)
-            return permissions.mask_data(financial_data)
-        except Exception as e:
-            logger.error(f"Error masking financial data: {e}")
-            return financial_data  # Return original data if masking fails
+        return prompt
 
     def _call_openrouter(self, messages: List[Dict[str, str]]) -> Dict[str, Any]:
         """Call OpenRouter API with messages"""
@@ -374,34 +310,7 @@ When analyzing user data, always consider:
 
     def _extract_data_needs(self, query: str, financial_data: Optional[Dict[str, Any]]) -> List[str]:
         """Determine what financial data is needed based on the query"""
-        # If we already have financial data, we may not need more
-        if financial_data:
-            return []
-            
-        # Determine what data is needed based on the query
-        query_lower = query.lower()
-        data_needs = set()
-        
-        if any(word in query_lower for word in ['asset', 'property', 'cash', 'bank']):
-            data_needs.add('assets')
-            
-        if any(word in query_lower for word in ['debt', 'loan', 'credit', 'mortgage']):
-            data_needs.add('liabilities')
-            
-        if any(word in query_lower for word in ['income', 'expense', 'spend', 'budget', 'salary']):
-            data_needs.add('transactions')
-            
-        if any(word in query_lower for word in ['epf', 'retirement', 'pension', '401k', 'contribution']):
-            data_needs.add('epf_retirement_balance')
-            
-        if any(word in query_lower for word in ['credit score', 'credit rating']):
-            data_needs.add('credit_score')
-            
-        if any(word in query_lower for word in ['invest', 'stock', 'mutual fund', 'bond', 'portfolio']):
-            data_needs.add('investments')
-            
-        # If no specific needs identified, request all categories
-        if not data_needs:
-            return ['assets', 'liabilities', 'transactions', 'investments']
-            
-        return list(data_needs)
+        # This is a simplified implementation - in practice, we could use the LLM to determine this
+        if not financial_data:
+            return ["assets", "liabilities", "transactions", "investments"]
+        return []

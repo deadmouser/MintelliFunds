@@ -25,3 +25,21 @@
 2025-09-14 09:10:01.839 | INFO     | __main__:<module>:57 - Using LLM-based NLP processor
 2025-09-14 09:10:01.839 | INFO     | __main__:<module>:68 - Financial AI API Server initialized
 2025-09-14 09:10:01.845 | INFO     | __main__:<module>:639 - Starting Financial AI API Server on 127.0.0.1:5000
+2025-09-14 09:12:51.083 | INFO     | privacy_manager:_init_database:141 - Privacy database initialized
+2025-09-14 09:12:51.084 | INFO     | privacy_manager:__init__:87 - Privacy manager initialized
+2025-09-14 09:12:51.084 | INFO     | nlp_interface:_init_database:145 - Conversation database initialized
+2025-09-14 09:12:51.084 | INFO     | nlp_interface:__init__:104 - Financial NLP processor initialized
+2025-09-14 09:12:51.084 | INFO     | nlp_interface:_init_database:145 - Conversation database initialized
+2025-09-14 09:12:51.084 | INFO     | llm_nlp_interface:__init__:39 - LLM Financial NLP processor initialized
+2025-09-14 09:12:51.084 | INFO     | __main__:<module>:57 - Using LLM-based NLP processor
+2025-09-14 09:12:51.085 | INFO     | __main__:<module>:68 - Financial AI API Server initialized
+2025-09-14 09:12:51.090 | INFO     | __main__:<module>:639 - Starting Financial AI API Server on 127.0.0.1:5000
+2025-09-14 09:12:54.038 | INFO     | privacy_manager:_init_database:141 - Privacy database initialized
+2025-09-14 09:12:54.038 | INFO     | privacy_manager:__init__:87 - Privacy manager initialized
+2025-09-14 09:12:54.039 | INFO     | nlp_interface:_init_database:145 - Conversation database initialized
+2025-09-14 09:12:54.039 | INFO     | nlp_interface:__init__:104 - Financial NLP processor initialized
+2025-09-14 09:12:54.039 | INFO     | nlp_interface:_init_database:145 - Conversation database initialized
+2025-09-14 09:12:54.039 | INFO     | llm_nlp_interface:__init__:39 - LLM Financial NLP processor initialized
+2025-09-14 09:12:54.039 | INFO     | __main__:<module>:57 - Using LLM-based NLP processor
+2025-09-14 09:12:54.039 | INFO     | __main__:<module>:68 - Financial AI API Server initialized
+2025-09-14 09:12:54.044 | INFO     | __main__:<module>:639 - Starting Financial AI API Server on 127.0.0.1:5000
